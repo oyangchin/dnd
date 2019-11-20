@@ -14,8 +14,10 @@ const Container = styled.div`
 class App extends React.Component {
   state = initialData;
 
-  onDragStart = () => {
+  onDragStart = start => {
     document.body.style.color = 'orange';
+    const homeIndex = this.state.columnOrder.indexOf(start.source.droppableId);
+    this.setState({ homeIndex });
   };
 
   onDragUpdate = update => {
@@ -27,6 +29,8 @@ class App extends React.Component {
   };
 
   onDragEnd = result => {
+    this.setState({ homeIndex: null });
+
     document.body.style.color = 'inherit';
     document.body.style.backgroundColor = 'inherit';
 
@@ -89,18 +93,26 @@ class App extends React.Component {
   render() {
     return (
       <DragDropContext
-        // onDragStart={this.onDragStart}
+        onDragStart={this.onDragStart}
         // onDragUpdate={this.onDragUpdate}
         onDragEnd={this.onDragEnd}
       >
         <Container>
-          {this.state.columnOrder.map(columnId => {
+          {this.state.columnOrder.map((columnId, index) => {
             const column = this.state.columns[columnId];
             const tasks = column.taskIds.map(
               taskId => this.state.tasks[taskId]
             );
+            const isDropDisabled = index < this.state.homeIndex;
             console.log(' >>>> tasks >>>> ', tasks);
-            return <Column key={column.id} column={column} tasks={tasks} />;
+            return (
+              <Column
+                key={column.id}
+                column={column}
+                tasks={tasks}
+                isDropDisabled={isDropDisabled}
+              />
+            );
           })}
         </Container>
       </DragDropContext>
