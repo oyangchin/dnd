@@ -10,10 +10,20 @@ const initialData = {
       id: 'column-1',
       title: 'To do',
       taskIds: ['0', '1', '2', '3']
+    },
+    'column-2': {
+      id: 'column-2',
+      title: 'In progress',
+      taskIds: []
+    },
+    'column-3': {
+      id: 'column-3',
+      title: 'Done',
+      taskIds: []
     }
   },
   // Facilitate reordering of the columns
-  columnOrder: ['column-1']
+  columnOrder: ['column-1', 'column-2', 'column-3']
 };
 
 export default initialData;
