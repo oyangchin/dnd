@@ -25,6 +25,20 @@ const TaskList = styled.div`
   min-height: 100px;
 `;
 
+class InnerList extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.task === this.tasks) {
+      return false;
+    }
+    return true;
+  }
+  render() {
+    return this.props.tasks.map((task, index) => (
+      <Task key={task.id} task={task} index={index} />
+    ));
+  }
+}
+
 class column extends Component {
   render() {
     return (
@@ -46,9 +60,7 @@ class column extends Component {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  {this.props.tasks.map((task, index) => (
-                    <Task key={task.id} task={task} index={index} />
-                  ))}
+                  <InnerList tasks={this.props.tasks} />
                   {provided.placeholder}
                 </TaskList>
               )}
